@@ -1,0 +1,97 @@
+{
+    "author": "Nokel",
+    "dependencies": {},
+    "keywords": [
+        "pebble-app"
+    ],
+    "name": "majorasmask_watchface",
+    "pebble": {
+        "capabilities": [
+            "health"
+        ],
+        "displayName": "Majora's Mask Watchface",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "moddable",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/heartfull.png",
+                    "name": "HEART_FULL",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/rightc20x20.png",
+                    "name": "RIGHTC",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/green30x30.png",
+                    "name": "IMAGE_GREEN",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/downc20x20.png",
+                    "name": "CDOWN",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/emptyheart.png",
+                    "name": "HEART_EMPTY",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "data/timespan.pdc",
+                    "name": "ARCH",
+                    "targetPlatforms": null,
+                    "type": "raw"
+                },
+                {
+                    "file": "images/3quarterheart.png",
+                    "name": "HEART_3QUARTER",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/quarterheart.png",
+                    "name": "HEART_QUARTER",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/blue30x30.png",
+                    "name": "IMAGE_BLUE",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/leftc20x20.png",
+                    "name": "LEFTC",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/halfheart.png",
+                    "name": "HEART_HALF",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "emery",
+            "gabbro"
+        ],
+        "uuid": "6d687b8f-9da2-4dc2-9259-8f44bc90d9a0",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.0.0"
+}
