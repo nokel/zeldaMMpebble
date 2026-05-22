@@ -80,13 +80,41 @@
                     "name": "HEART_HALF",
                     "targetPlatforms": null,
                     "type": "bitmap"
-                }
+                },
+				{
+					"file": "font/Charlemagne.ttf",
+					"name": "OOT_FONT_24",
+					"type": "font"
+				},
+				{
+					"file": "font/CharlemagneBold.otf",
+					"name": "OOT_FONT_BLD_20",
+					"type": "font"
+				},
+				{
+					"file": "font/CharlemagneRegular.ttf",
+					"name": "OOT_FONT_REG_18",
+					"type": "font"
+				},
+				{
+					"file": "font/Triforce.ttf",
+					"name": "TRI_FONT_28",
+					"type": "font"
+				},
+				{
+					"file": "font/Triforce.ttf",
+					"name": "TRI_FONT_14",
+					"type": "font"
+				}
             ]
         },
         "sdkVersion": "3",
         "targetPlatforms": [
-            "emery",
-            "gabbro"
+            "aplite",
+            "basalt",
+            "chalk",
+            "diorite",
+            "emery"
         ],
         "uuid": "6d687b8f-9da2-4dc2-9259-8f44bc90d9a0",
         "watchapp": {
