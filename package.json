@@ -1,6 +1,5 @@
 {
     "author": "Nokel",
-    "dependencies": {},
     "keywords": [
         "pebble-app"
     ],
@@ -11,7 +10,12 @@
         ],
         "displayName": "Majora's Mask Watchface",
         "enableMultiJS": true,
-        "messageKeys": [],
+        "messageKeys": [
+                "KEY_24H",
+                "KEY_ANIM_ENABLED",
+                "KEY_ANIM_DURATION",
+                "KEY_TIMEOUT_S"
+            ],
         "projectType": "moddable",
         "resources": {
             "media": [
@@ -64,6 +68,12 @@
                     "type": "bitmap"
                 },
                 {
+                    "file": "images/magic50px.png",
+                    "name": "MAGIC_BAR",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/blue30x30.png",
                     "name": "IMAGE_BLUE",
                     "targetPlatforms": null,
@@ -81,31 +91,131 @@
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
-				{
-					"file": "font/Charlemagne.ttf",
-					"name": "OOT_FONT_24",
-					"type": "font"
-				},
-				{
-					"file": "font/CharlemagneBold.otf",
-					"name": "OOT_FONT_BLD_20",
-					"type": "font"
-				},
-				{
-					"file": "font/CharlemagneRegular.ttf",
-					"name": "OOT_FONT_REG_18",
-					"type": "font"
-				},
-				{
-					"file": "font/Triforce.ttf",
-					"name": "TRI_FONT_28",
-					"type": "font"
-				},
-				{
-					"file": "font/Triforce.ttf",
-					"name": "TRI_FONT_14",
-					"type": "font"
-				}
+                {
+                    "file": "images/speed60px.png",
+                    "name": "SPEED",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/hoursun.png",
+                    "name": "HOUR_SUN",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/moonhour.png",
+                    "name": "MOON_HOUR",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/sunsecond.png",
+                    "name": "SUN_SECOND",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/Adult_Walletsm.png",
+                    "name": "WALLET_ICON",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/0.png",
+                    "name": "DIGIT_0",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/_1.png",
+                    "name": "DIGIT_1",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/2.png",
+                    "name": "DIGIT_2",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/3.png",
+                    "name": "DIGIT_3",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/4.png",
+                    "name": "DIGIT_4",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/5.png",
+                    "name": "DIGIT_5",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/6.png",
+                    "name": "DIGIT_6",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/7.png",
+                    "name": "DIGIT_7",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/8.png",
+                    "name": "DIGIT_8",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/9.png",
+                    "name": "DIGIT_9",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "font/Charlemagne.ttf",
+                    "name": "OOT_FONT_24",
+                    "type": "font"
+                },
+                {
+                    "file": "font/CharlemagneBold.otf",
+                    "name": "OOT_FONT_BLD_20",
+                    "type": "font"
+                },
+                {
+                    "file": "font/CharlemagneRegular.ttf",
+                    "name": "OOT_FONT_REG_18",
+                    "type": "font"
+                },
+                {
+                    "file": "font/Triforce.ttf",
+                    "name": "TRI_FONT_28",
+                    "type": "font"
+                },
+                {
+                    "file": "font/Triforce.ttf",
+                    "name": "TRI_FONT_20",
+                    "type": "font"
+                },
+                {
+                    "file": "font/Triforce.ttf",
+                    "name": "TRI_FONT_18",
+                    "type": "font"
+                },
+                {
+                    "file": "font/Triforce.ttf",
+                    "name": "TRI_FONT_14",
+                    "type": "font"
+                }
             ]
         },
         "sdkVersion": "3",
@@ -123,5 +233,8 @@
             "watchface": true
         }
     },
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "dependencies": {
+        "@rebble/clay": "^1.0.10"
+    }
 }
