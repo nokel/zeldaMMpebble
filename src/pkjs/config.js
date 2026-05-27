@@ -39,13 +39,13 @@ module.exports = [
         "messageKey": "KEY_ANIM_DURATION",
         "label": "Sweep Duration",
         "description": "How long the sweep lasts each second. Shorter = less battery drain.",
-        "defaultValue": "900",
+        "defaultValue": 900,
         "options": [
-          { "label": "Tick (no sweep)", "value": "0" },
-          { "label": "Short (500 ms)",  "value": "500" },
-          { "label": "Normal (700 ms)", "value": "700" },
-          { "label": "Long (900 ms)",   "value": "900" },
-          { "label": "Continuous",      "value": "1000" }
+          { "label": "Tick (no sweep)", "value": 0 },
+          { "label": "Short (500 ms)",  "value": 500 },
+          { "label": "Normal (700 ms)", "value": 700 },
+          { "label": "Long (900 ms)",   "value": 900 },
+          { "label": "Continuous",      "value": 1000 }
         ]
       },
       {
@@ -53,13 +53,13 @@ module.exports = [
         "messageKey": "KEY_TIMEOUT_S",
         "label": "Hide After",
         "description": "Seconds before the second hand disappears. Matches your Pebble's backlight timeout for best results.",
-        "defaultValue": "10",
+        "defaultValue": 10,
         "options": [
-          { "label": "Always visible", "value": "0" },
-          { "label": "5 seconds",      "value": "5" },
-          { "label": "10 seconds",     "value": "10" },
-          { "label": "15 seconds",     "value": "15" },
-          { "label": "30 seconds",     "value": "30" }
+          { "label": "Always visible", "value": 0 },
+          { "label": "5 seconds",      "value": 5 },
+          { "label": "10 seconds",     "value": 10 },
+          { "label": "15 seconds",     "value": 15 },
+          { "label": "30 seconds",     "value": 30 }
         ]
       }
     ]
