@@ -15,11 +15,13 @@
     GColor stroke_color;
   } recolor_data;
 
-  static bool prv_recolor_iterator(GDrawCommand *command, uint32_t index, void 
+  static bool prv_recolor_iterator(GDrawCommand *command, uint32_t index, void
   *context) {
     recolor_data *data = (recolor_data *)context;
-    gdraw_command_set_stroke_color(command, data->stroke_color);
-    gdraw_command_set_fill_color(command, data->fill_color);
+    if (!gcolor_equal(data->stroke_color, GColorClear))
+      gdraw_command_set_stroke_color(command, data->stroke_color);
+    if (!gcolor_equal(data->fill_color, GColorClear))
+      gdraw_command_set_fill_color(command, data->fill_color);
     return true;
   }
 
@@ -74,6 +76,7 @@
       GPoint offset, int scale10, int rotation,
       GColor fill_color, GColor stroke_color, int custom_stroke_width) {
     GDrawCommandImage *temp = gdraw_command_image_clone(image);
+    if (!temp) return;
     GDrawCommandList *list = gdraw_command_image_get_command_list(temp);
     GSize sz = gdraw_command_image_get_bounds_size(temp);
     GPoint rot_offset = { .x = sz.w / 2, .y = sz.h / 2 };

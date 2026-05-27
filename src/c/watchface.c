@@ -92,13 +92,41 @@ static int STEPS_Y      = 35;
 static Window *s_window;
 
 /* =========================================================
-   TEXT LAYERS
+   OUTLINED TEXT LAYERS
 ========================================================= */
 
-static TextLayer *s_hour_layer;
-static TextLayer *s_minute_layer;
-static TextLayer *s_date_layer;
-static TextLayer *s_day_layer;
+typedef struct {
+  const char    *text;
+  GFont          font;
+  GColor         fg;
+  GColor         outline;
+  GTextAlignment align;
+} OLTextState;
+
+static void ol_text_update_proc(Layer *layer, GContext *ctx) {
+  OLTextState *s = (OLTextState *)layer_get_data(layer);
+  if (!s->text || s->text[0] == '\0') return;
+  GRect b = layer_get_bounds(layer);
+  const int8_t dx[] = {-1, 1,  0, 0};
+  const int8_t dy[] = { 0, 0, -1, 1};
+  graphics_context_set_text_color(ctx, s->outline);
+  for (int i = 0; i < 4; i++) {
+    GRect ob = GRect(b.origin.x + dx[i], b.origin.y + dy[i], b.size.w, b.size.h);
+    graphics_draw_text(ctx, s->text, s->font, ob, GTextOverflowModeWordWrap, s->align, NULL);
+  }
+  graphics_context_set_text_color(ctx, s->fg);
+  graphics_draw_text(ctx, s->text, s->font, b, GTextOverflowModeWordWrap, s->align, NULL);
+}
+
+static Layer *s_hour_layer;
+static Layer *s_minute_layer;
+static Layer *s_date_layer;
+static Layer *s_day_layer;
+
+static char hour_buffer[3];
+static char minute_buffer[3];
+static char date_buffer[16];
+static char day_buffer[16];
 
 /* =========================================================
    HEARTS
@@ -137,14 +165,14 @@ static GBitmap *s_magic_bmp;
 
 /* STEP DIGITS */
 static GBitmap *s_digit_bmps[10];
-#if defined(PBL_HEALTH)
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
 static BitmapLayer *s_steps_digits[10];
 static int          s_steps_digit_count = 0;
 #endif
 
 #if defined(PBL_HEALTH)
-static TextLayer *s_hr_layer;
-static char       s_hr_buffer[8];
+static Layer *s_hr_layer;
+static char   s_hr_buffer[8];
 #endif
 
 /* =========================================================
@@ -152,7 +180,6 @@ static char       s_hr_buffer[8];
 ========================================================= */
 
 static GFont s_tri_font_28;
-static GFont s_tri_font_20;
 static GFont s_tri_font_18;
 static GFont s_tri_font_14;
 
@@ -200,29 +227,21 @@ static void load_resources(void) {
 
   s_green_bmp =
       gbitmap_create_with_resource(RESOURCE_ID_IMAGE_GREEN);
-
   s_blue_bmp =
       gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUE);
-
   s_heart_full_bmp =
       gbitmap_create_with_resource(RESOURCE_ID_HEART_FULL);
-
   s_heart_3quarter_bmp =
       gbitmap_create_with_resource(RESOURCE_ID_HEART_3QUARTER);
-
   s_heart_half_bmp =
       gbitmap_create_with_resource(RESOURCE_ID_HEART_HALF);
-
   s_heart_quarter_bmp =
       gbitmap_create_with_resource(RESOURCE_ID_HEART_QUARTER);
-
   s_heart_empty_bmp =
       gbitmap_create_with_resource(RESOURCE_ID_HEART_EMPTY);
-
   s_leftc_bmp  = gbitmap_create_with_resource(RESOURCE_ID_LEFTC);
   s_rightc_bmp = gbitmap_create_with_resource(RESOURCE_ID_RIGHTC);
   s_downc_bmp  = gbitmap_create_with_resource(RESOURCE_ID_CDOWN);
-
   s_speed_bmp      = gbitmap_create_with_resource(RESOURCE_ID_SPEED);
   s_hour_sun_bmp   = gbitmap_create_with_resource(RESOURCE_ID_HOUR_SUN);
   s_moon_hour_bmp  = gbitmap_create_with_resource(RESOURCE_ID_MOON_HOUR);
@@ -230,6 +249,7 @@ static void load_resources(void) {
   s_wallet_bmp     = gbitmap_create_with_resource(RESOURCE_ID_WALLET_ICON);
   s_magic_bmp      = gbitmap_create_with_resource(RESOURCE_ID_MAGIC_BAR);
 
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
   s_digit_bmps[0] = gbitmap_create_with_resource(RESOURCE_ID_DIGIT_0);
   s_digit_bmps[1] = gbitmap_create_with_resource(RESOURCE_ID_DIGIT_1);
   s_digit_bmps[2] = gbitmap_create_with_resource(RESOURCE_ID_DIGIT_2);
@@ -240,14 +260,21 @@ static void load_resources(void) {
   s_digit_bmps[7] = gbitmap_create_with_resource(RESOURCE_ID_DIGIT_7);
   s_digit_bmps[8] = gbitmap_create_with_resource(RESOURCE_ID_DIGIT_8);
   s_digit_bmps[9] = gbitmap_create_with_resource(RESOURCE_ID_DIGIT_9);
+#endif
 
+#if !defined(PBL_PLATFORM_APLITE)
   s_arch_cmd =
       gdraw_command_image_create_with_resource(RESOURCE_ID_ARCH);
+#endif
 
   s_tri_font_28 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_TRI_FONT_28));
-  s_tri_font_20 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_TRI_FONT_20));
+#if !defined(PBL_PLATFORM_APLITE)
   s_tri_font_18 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_TRI_FONT_18));
   s_tri_font_14 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_TRI_FONT_14));
+#else
+  s_tri_font_18 = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
+  s_tri_font_14 = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
+#endif
 }
 
 /* =========================================================
@@ -276,19 +303,24 @@ static void unload_resources(void) {
   gbitmap_destroy(s_wallet_bmp);
   gbitmap_destroy(s_magic_bmp);
 
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
   for (int i = 0; i < 10; i++) {
     gbitmap_destroy(s_digit_bmps[i]);
   }
+#endif
 
+#if !defined(PBL_PLATFORM_APLITE)
   if (s_arch_cmd) {
     gdraw_command_image_destroy(s_arch_cmd);
     s_arch_cmd = NULL;
   }
+#endif
 
   fonts_unload_custom_font(s_tri_font_28);
-  fonts_unload_custom_font(s_tri_font_20);
+#if !defined(PBL_PLATFORM_APLITE)
   fonts_unload_custom_font(s_tri_font_18);
   fonts_unload_custom_font(s_tri_font_14);
+#endif
 }
 
 /* =========================================================
@@ -304,33 +336,178 @@ static void unload_resources(void) {
    the master image is never mutated.
 ========================================================= */
 
+// GPoints from timespan.svg, all scaled ×3 (ARCH_SCALE=150 / SVG width=50).
+// path1_3 = main arch body (outer + inner arc as one closed polygon).
+// path2–12 = radial spoke marks; drawn BLACK on the white arch body so they
+//            are visible (in color they are white on a colored background).
+// path52–63 = hour-marker ovals (2–4 px); drawn as small black squares.
+#if defined(PBL_PLATFORM_APLITE)
+static const GPoint s_arch_body[] = {
+  {142,71},{143,71},{144,71},{145,71},{146,71},{147,71},{147,70},{148,70},
+  {149,69},{150,68},{104,74},{108,73},{113,73},{120,73},
+  {126,72},{132,72},{136,72},{138,72},{138,71},{138,70},{138,68},{138,67},
+  {138,66},{137,64},{137,63},{137,61},{137,60},{136,60},{136,59},{136,57},
+  {135,56},{134,54},{134,53},{133,51},{132,50},{132,49},{131,48},{130,47},
+  {130,46},{129,46},{129,45},{128,44},{127,43},{126,42},{125,41},{124,39},
+  {122,38},{121,37},{121,36},{120,36},{119,35},{118,34},{117,34},{116,33},
+  {115,32},{113,31},{112,30},{110,29},{108,28},{107,28},{106,27},{105,27},
+  {103,26},{102,26},{101,25},{99,25},{98,24},{96,24},{95,23},{93,23},
+  {92,23},{91,23},{91,22},{90,22},{89,22},{88,22},{87,22},{86,22},
+  {84,22},{83,22},{82,22},{80,22},{79,22},{77,22},{76,22},{75,22},
+  {74,22},{73,22},{72,22},{71,22},{69,22},{68,22},{67,22},{65,22},
+  {64,22},{63,22},{62,22},{61,22},{60,22},{60,23},{59,23},{57,23},
+  {55,24},{53,24},{52,25},{50,25},{49,26},{47,26},{46,27},{45,27},
+  {44,28},{43,28},{42,29},{40,29},{39,30},{37,31},{36,32},{35,33},
+  {33,33},{32,35},{31,35},{31,36},{30,36},{29,37},{28,38},{27,39},
+  {26,40},{24,41},{23,43},{22,44},{21,46},{20,47},{20,48},{19,48},
+  {19,50},{18,51},{17,52},{17,53},{16,55},{16,56},{15,57},{15,59},
+  {14,59},{14,60},{14,61},{14,62},{14,63},{14,64},{13,65},{13,66},
+  {13,67},{13,68},{13,69},{13,70},{13,71},{0,69},
+  {4,72},{5,72},{6,72},{7,72},{7,71},{8,71},{8,70},{8,69},
+  {8,68},{8,67},{8,66},{8,65},{9,64},{9,63},{9,62},{9,61},
+  {9,59},{10,58},{10,57},{10,55},{11,54},{11,53},{12,51},{13,50},
+  {13,49},{14,47},{15,46},{16,45},{16,44},{17,43},{18,42},{18,41},
+  {19,40},{21,39},{22,37},{24,36},{26,34},{28,32},{32,29},{36,27},
+  {40,25},{43,23},{47,22},{50,20},{53,20},{56,19},{55,18},{55,17},
+  {55,16},{56,15},{56,14},{57,13},{58,13},{59,12},{60,12},{62,12},
+  {63,12},{65,12},{66,12},{67,13},{68,13},{69,13},{68,13},{67,12},
+  {66,11},{66,10},{65,9},{66,9},{66,8},{67,8},{68,9},{69,9},
+  {70,10},{70,11},{71,11},{71,12},{71,11},{71,10},{70,10},{70,9},
+  {70,8},{70,7},{69,7},{69,6},{69,5},{70,4},{70,3},{71,2},
+  {71,1},{72,1},{74,0},{75,0},{76,0},{77,1},{78,1},{79,2},
+  {80,3},{81,4},{81,5},{81,6},{81,7},{81,8},{81,9},{80,10},
+  {80,11},{79,11},{80,11},{80,10},{81,10},{81,9},{82,9},{82,8},
+  {83,8},{84,8},{85,8},{85,9},{85,10},{84,10},{84,11},{83,12},
+  {82,13},{83,13},{83,12},{84,12},{85,12},{86,12},{87,11},{88,11},
+  {89,11},{90,11},{91,12},{92,12},{93,13},{94,14},{94,15},{94,16},
+  {95,16},{95,17},{95,18},{94,18},{94,19},{95,20},{96,20},{97,20},
+  {98,20},{99,21},{100,21},{102,21},{107,23},{111,25},{115,27},{119,29},
+  {122,31},{124,33},{126,34},{127,35},{128,37},{130,39},{131,41},{133,43},
+  {136,47},{137,50},{139,54},{141,59},{141,61},{142,62},{142,64},{142,66},
+  {142,67},{142,69},{142,70},{142,71},
+};
+static const GPoint s_sp2[] = {
+  {105,27},{106,27},{107,28},{108,28},{107,29},{106,30},{104,33},{101,37},
+  {97,42},{94,47},{91,51},{89,54},{88,55},{88,54},{90,51},{93,46},
+  {96,41},{99,36},{102,31},{104,28},{105,27},
+};
+static const GPoint s_sp3[] = {
+  {61,22},{62,22},{63,22},{68,52},{59,24},{59,23},{60,23},{60,22},{61,22},
+};
+static const GPoint s_sp4[] = {
+  {92,23},{82,50},{88,22},{89,22},{90,22},{91,22},{91,23},{92,23},
+};
+static const GPoint s_sp5[] = {
+  {136,60},{137,60},{137,61},{98,68},{136,59},{136,60},
+};
+static const GPoint s_sp6[] = {
+  {131,48},{96,64},{94,65},{129,46},{130,46},{130,47},{131,48},
+};
+static const GPoint s_sp7[] = {
+  {121,37},{91,60},{93,59},{96,56},{100,52},{105,47},{110,43},{115,39},
+  {118,36},{119,35},{120,36},{121,36},{121,37},
+};
+static const GPoint s_sp8[] = {
+  {77,22},{75,48},{74,22},{75,22},{76,22},{77,22},
+};
+static const GPoint s_sp9[] = {
+  {46,27},{64,57},{43,28},{44,28},{45,27},{46,27},
+};
+static const GPoint s_sp10[] = {
+  {60,61},{59,60},{30,36},{31,36},{31,35},{32,35},{60,61},
+};
+static const GPoint s_sp11[] = {
+  {55,64},{19,48},{20,48},{20,47},{21,46},{55,64},
+};
+static const GPoint s_sp12[] = {
+  {53,69},{14,61},{14,60},{14,59},{15,59},{53,69},
+};
+// Crown decorations: oval bobble, spike, right wing, left wing (ts_path1_0/1/2/4)
+static const GPoint s_crown0[] = {
+  {73,19},{74,19},{74,20},{75,20},{76,20},{76,19},{77,19},{77,18},
+  {76,18},{75,18},{74,18},{73,19},
+};
+static const GPoint s_crown1[] = {
+  {73,3},{73,4},{73,5},{73,6},{73,7},{73,8},{73,9},{73,10},
+  {74,10},{74,11},{74,12},{75,12},{76,12},{76,11},{76,10},{77,10},
+  {77,9},{77,8},{77,7},{77,6},{77,5},{77,4},{77,3},{76,3},
+  {75,3},{75,2},{75,3},{74,3},{73,3},
+};
+static const GPoint s_crown2[] = {
+  {91,16},{91,15},{90,15},{88,14},{86,15},{84,15},{83,15},{81,16},
+  {80,16},{80,17},{81,17},{82,17},{83,17},{84,17},{85,17},{86,18},
+  {87,18},{88,18},{89,18},{90,18},{91,18},{91,17},{92,17},{92,16},
+  {91,16},
+};
+static const GPoint s_crown4[] = {
+  {70,16},{69,16},{67,15},{66,15},{64,15},{62,15},{61,15},{60,15},
+  {59,16},{59,17},{59,18},{60,18},{61,18},{62,18},{63,18},{63,17},
+  {64,17},{66,17},{67,17},{68,17},{69,17},{70,17},{70,16},
+};
+// Hour-marker centres (path52–63, 11 unique positions)
+static const GPoint s_markers[] = {
+  {14,60},{20,47},{31,36},{45,28},{61,22},{76,22},
+  {91,22},{107,28},{121,36},{131,47},{137,60},
+};
+static void prv_fill_path(GContext *ctx, const GPoint *pts, uint16_t n) {
+  GPathInfo info = { .num_points = n, .points = (GPoint*)pts };
+  GPath *p = gpath_create(&info);
+  if (p) { gpath_draw_filled(ctx, p); gpath_destroy(p); }
+}
+#endif
+
 static void arch_update_proc(Layer *layer, GContext *ctx) {
+#if defined(PBL_PLATFORM_APLITE)
+  // Everything is drawn white. The arch band is white on black background.
+  // The spokes extend from the inner arc downward into the black interior —
+  // they are visible as white shapes against the black background, exactly
+  // as the SVG renders them on colour platforms.
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_context_set_stroke_color(ctx, GColorWhite);
 
+  // 1. Arch body + crown decorations
+  prv_fill_path(ctx, s_arch_body, ARRAY_LENGTH(s_arch_body));
+  prv_fill_path(ctx, s_crown0,    ARRAY_LENGTH(s_crown0));
+  prv_fill_path(ctx, s_crown1,    ARRAY_LENGTH(s_crown1));
+  prv_fill_path(ctx, s_crown2,    ARRAY_LENGTH(s_crown2));
+  prv_fill_path(ctx, s_crown4,    ARRAY_LENGTH(s_crown4));
+
+  // 2. Radial spokes — white fill, visible in the black interior
+  prv_fill_path(ctx, s_sp2,  ARRAY_LENGTH(s_sp2));
+  prv_fill_path(ctx, s_sp3,  ARRAY_LENGTH(s_sp3));
+  prv_fill_path(ctx, s_sp4,  ARRAY_LENGTH(s_sp4));
+  prv_fill_path(ctx, s_sp5,  ARRAY_LENGTH(s_sp5));
+  prv_fill_path(ctx, s_sp6,  ARRAY_LENGTH(s_sp6));
+  prv_fill_path(ctx, s_sp7,  ARRAY_LENGTH(s_sp7));
+  prv_fill_path(ctx, s_sp8,  ARRAY_LENGTH(s_sp8));
+  prv_fill_path(ctx, s_sp9,  ARRAY_LENGTH(s_sp9));
+  prv_fill_path(ctx, s_sp10, ARRAY_LENGTH(s_sp10));
+  prv_fill_path(ctx, s_sp11, ARRAY_LENGTH(s_sp11));
+  prv_fill_path(ctx, s_sp12, ARRAY_LENGTH(s_sp12));
+
+  // 3. Hour marker ovals — white, visible against the black interior
+  for (int k = 0; k < (int)ARRAY_LENGTH(s_markers); k++) {
+    graphics_fill_rect(ctx,
+      GRect(s_markers[k].x - 1, s_markers[k].y - 1, 3, 3),
+      0, GCornerNone);
+  }
+#else
   if (!s_arch_cmd) return;
-
-  /* Get the native size baked into the PDC file. */
   GSize native = gdraw_command_image_get_bounds_size(s_arch_cmd);
-
-  /* Compute scale as ×10 integer (e.g. 1.0 → 10, 1.5 → 15).
-     Guard against a zero native size just in case the asset is bad. */
   int scale10 = (native.w > 0)
     ? (ARCH_SCALE * 10) / native.w
     : 10;
-
-  /* Draw at (0,0) relative to the layer — the layer itself is
-     positioned by rect_pos() in window_load().
-     Pass GColorClear for colors to keep the PDC's own colors.
-     Pass 0 for stroke_width to keep the PDC's own widths.      */
   pdc_transform_gdraw_command_image_draw_transformed(
     ctx,
     s_arch_cmd,
-    GPoint(0, 0),   /* offset inside the layer */
-    scale10,        /* scale ×10 */
-    0,              /* rotation (degrees, 0 = none) */
-    GColorClear,    /* fill_color override  — Clear = use PDC original */
-    GColorClear,    /* stroke_color override — Clear = use PDC original */
-    0               /* stroke_width override — 0 = use PDC original */
+    GPoint(0, 0),
+    scale10,
+    0,
+    GColorClear,
+    GColorClear,
+    0
   );
+#endif
 }
 
 /* =========================================================
@@ -421,14 +598,14 @@ static void update_sun_moon(int hour_24, int minute) {
   int angle_deg;
 
   if (is_day) {
-    // Sun: right (0°) at 6am → top (90°) at noon → left (180°) at 6pm
+    // Sun: left (180°) at 6am → crown (90°) at noon → right (0°) at 6pm
     int mins = (hour_24 - 6) * 60 + minute;
-    angle_deg = mins / 4;
+    angle_deg = 180 - mins / 4;
   } else {
-    // Moon: right (0°) at 6pm → top (90°) at midnight → left (180°) at 6am
+    // Moon: left (180°) at 6pm → crown (90°) at midnight → right (0°) at 6am
     int mins = (hour_24 >= 18) ? (hour_24 - 18) * 60 + minute
                                 : (hour_24 + 6) * 60 + minute;
-    angle_deg = mins / 4;
+    angle_deg = 180 - mins / 4;
   }
 
   int x, y;
@@ -466,11 +643,6 @@ static void update_time(void) {
   time_t       temp      = time(NULL);
   struct tm   *tick_time = localtime(&temp);
 
-  static char hour_buffer[3];
-  static char minute_buffer[3];
-  static char date_buffer[16];
-  static char day_buffer[16];
-
   int hour = tick_time->tm_hour;
 
   if (!config_24h) {
@@ -499,10 +671,10 @@ static void update_time(void) {
            days[tick_time->tm_wday],
            months[tick_time->tm_mon]);
 
-  text_layer_set_text(s_hour_layer,   hour_buffer);
-  text_layer_set_text(s_minute_layer, minute_buffer);
-  text_layer_set_text(s_date_layer,   date_buffer);
-  text_layer_set_text(s_day_layer,    day_buffer);
+  layer_mark_dirty(s_hour_layer);
+  layer_mark_dirty(s_minute_layer);
+  layer_mark_dirty(s_date_layer);
+  layer_mark_dirty(s_day_layer);
 
   update_sun_moon(tick_time->tm_hour, tick_time->tm_min);
 }
@@ -635,9 +807,11 @@ static void update_heart_rate(void) {
   } else {
     snprintf(s_hr_buffer, sizeof(s_hr_buffer), "--");
   }
-  text_layer_set_text(s_hr_layer, s_hr_buffer);
+  layer_mark_dirty(s_hr_layer);
 }
+#endif
 
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
 static void update_steps(void) {
   for (int i = 0; i < s_steps_digit_count; i++) {
     bitmap_layer_destroy(s_steps_digits[i]);
@@ -668,9 +842,11 @@ static void update_steps(void) {
 }
 
 static void health_handler(HealthEventType event, void *context) {
+#if defined(PBL_HEALTH)
   if (event == HealthEventHeartRateUpdate || event == HealthEventSignificantUpdate) {
     update_heart_rate();
   }
+#endif
   if (event == HealthEventMovementUpdate || event == HealthEventSignificantUpdate) {
     update_steps();
   }
@@ -801,47 +977,36 @@ static void window_load(Window *window) {
      TEXT LAYERS — added last so they render on top of everything
   ------------------------------------------------------- */
 
-  s_hour_layer = text_layer_create(
-      rect_pos(40 + HOUR_X, 48 + HOUR_Y, 54, 42));
-  text_layer_set_background_color(s_hour_layer,    GColorClear);
-  text_layer_set_text_color(s_hour_layer,           PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
-  text_layer_set_font(s_hour_layer,                 s_tri_font_28);
-  text_layer_set_text_alignment(s_hour_layer,       GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(s_hour_layer));
+  #define MAKE_OL_LAYER(var, x, y, w, h, buf, fnt, al) do { \
+    (var) = layer_create_with_data(rect_pos((x),(y),(w),(h)), sizeof(OLTextState)); \
+    OLTextState *_s = (OLTextState *)layer_get_data(var); \
+    _s->text    = (buf); \
+    _s->font    = (fnt); \
+    _s->fg      = PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite); \
+    _s->outline = GColorBlack; \
+    _s->align   = (al); \
+    layer_set_update_proc((var), ol_text_update_proc); \
+    layer_add_child(window_layer, (var)); \
+  } while (0)
 
-  s_minute_layer = text_layer_create(
-      rect_pos(80 + MINUTE_X, 86 + MINUTE_Y, 54, 42));
-  text_layer_set_background_color(s_minute_layer,  GColorClear);
-  text_layer_set_text_color(s_minute_layer,         PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
-  text_layer_set_font(s_minute_layer,               s_tri_font_28);
-  text_layer_set_text_alignment(s_minute_layer,     GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(s_minute_layer));
+  MAKE_OL_LAYER(s_hour_layer,   40+HOUR_X,   48+HOUR_Y,   54, 42, hour_buffer,   s_tri_font_28, GTextAlignmentCenter);
+  MAKE_OL_LAYER(s_minute_layer, 80+MINUTE_X, 86+MINUTE_Y, 54, 42, minute_buffer, s_tri_font_28, GTextAlignmentCenter);
+  MAKE_OL_LAYER(s_date_layer,   DATE_X+32,   DATE_Y+120,  80, 24, date_buffer,   s_tri_font_18, GTextAlignmentCenter);
+  MAKE_OL_LAYER(s_day_layer,    DATE_X+24,   DATE_Y+142,  96, 24, day_buffer,    s_tri_font_14, GTextAlignmentCenter);
 
-  s_date_layer = text_layer_create(
-      rect_pos(DATE_X + 32, DATE_Y + 120, 80, 24));
-  text_layer_set_background_color(s_date_layer,    GColorClear);
-  text_layer_set_text_color(s_date_layer,           PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
-  text_layer_set_font(s_date_layer,                 s_tri_font_18);
-  text_layer_set_text_alignment(s_date_layer,       GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
-
-  s_day_layer = text_layer_create(
-      rect_pos(DATE_X + 24, DATE_Y + 142, 96, 24));
-  text_layer_set_background_color(s_day_layer,     GColorClear);
-  text_layer_set_text_color(s_day_layer,            PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
-  text_layer_set_font(s_day_layer,                  s_tri_font_14);
-  text_layer_set_text_alignment(s_day_layer,        GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(s_day_layer));
+  #undef MAKE_OL_LAYER
 
 #if defined(PBL_HEALTH)
-  s_hr_layer = text_layer_create(
-      rect_pos(LEFTC_X, LEFTC_Y, 20, 20));
-  text_layer_set_background_color(s_hr_layer,      GColorClear);
-  text_layer_set_text_color(s_hr_layer,             PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite));
-  text_layer_set_font(s_hr_layer,                   s_tri_font_14);
-  text_layer_set_text_alignment(s_hr_layer,         GTextAlignmentCenter);
-  text_layer_set_text(s_hr_layer, "--");
-  layer_add_child(window_layer, text_layer_get_layer(s_hr_layer));
+  s_hr_layer = layer_create_with_data(rect_pos(LEFTC_X, LEFTC_Y, 20, 20), sizeof(OLTextState));
+  { OLTextState *_s = (OLTextState *)layer_get_data(s_hr_layer);
+    _s->text    = s_hr_buffer;
+    _s->font    = s_tri_font_14;
+    _s->fg      = PBL_IF_COLOR_ELSE(GColorYellow, GColorWhite);
+    _s->outline = GColorBlack;
+    _s->align   = GTextAlignmentCenter; }
+  snprintf(s_hr_buffer, sizeof(s_hr_buffer), "--");
+  layer_set_update_proc(s_hr_layer, ol_text_update_proc);
+  layer_add_child(window_layer, s_hr_layer);
 #endif
 
   /* -------------------------------------------------------
@@ -859,6 +1024,8 @@ static void window_load(Window *window) {
 
 #if defined(PBL_HEALTH)
   update_heart_rate();
+#endif
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
   update_steps();
 #endif
 }
@@ -878,12 +1045,12 @@ static void window_unload(Window *window) {
     s_anim_timer = NULL;
   }
 
-  text_layer_destroy(s_hour_layer);
-  text_layer_destroy(s_minute_layer);
-  text_layer_destroy(s_date_layer);
-  text_layer_destroy(s_day_layer);
+  layer_destroy(s_hour_layer);
+  layer_destroy(s_minute_layer);
+  layer_destroy(s_date_layer);
+  layer_destroy(s_day_layer);
 #if defined(PBL_HEALTH)
-  text_layer_destroy(s_hr_layer);
+  layer_destroy(s_hr_layer);
 #endif
 
   bitmap_layer_destroy(s_green_circle);
@@ -903,7 +1070,7 @@ static void window_unload(Window *window) {
   bitmap_layer_destroy(s_sun_second_layer);
   bitmap_layer_destroy(s_wallet_layer);
 
-#if defined(PBL_HEALTH)
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
   for (int i = 0; i < s_steps_digit_count; i++) {
     bitmap_layer_destroy(s_steps_digits[i]);
   }
@@ -983,7 +1150,7 @@ static void init(void) {
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
   battery_state_service_subscribe(battery_callback);
   app_focus_service_subscribe(focus_handler);
-#if defined(PBL_HEALTH)
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
   health_service_events_subscribe(health_handler, NULL);
 #endif
 
@@ -1000,7 +1167,7 @@ static void deinit(void) {
   tick_timer_service_unsubscribe();
   battery_state_service_unsubscribe();
   app_focus_service_unsubscribe();
-#if defined(PBL_HEALTH)
+#if defined(PBL_HEALTH) || defined(PBL_PLATFORM_APLITE)
   health_service_events_unsubscribe();
 #endif
   window_destroy(s_window);
