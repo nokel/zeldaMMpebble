@@ -65,6 +65,28 @@ module.exports = [
     ]
   },
   {
+    "type": "section",
+    "items": [
+      {
+        "type": "heading",
+        "defaultValue": "Health",
+        "size": 2
+      },
+      {
+        "type": "toggle",
+        "messageKey": "KEY_SHOW_HR",
+        "label": "Show Heart Rate",
+        "defaultValue": true
+      },
+      {
+        "type": "toggle",
+        "messageKey": "KEY_SHOW_STEPS",
+        "label": "Show Step Count",
+        "defaultValue": true
+      }
+    ]
+  },
+  {
     "type": "submit",
     "defaultValue": "Save"
   }
