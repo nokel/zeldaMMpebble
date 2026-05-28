@@ -14,173 +14,126 @@
                 "KEY_24H",
                 "KEY_ANIM_ENABLED",
                 "KEY_ANIM_DURATION",
-                "KEY_TIMEOUT_S"
+                "KEY_TIMEOUT_S",
+                "KEY_SHOW_HR",
+                "KEY_SHOW_STEPS"
             ],
-        "projectType": "moddable",
+        "projectType": "native",
         "resources": {
             "media": [
-                {
-                    "file": "images/heartfull.png",
-                    "name": "HEART_FULL",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/rightc20x20.png",
-                    "name": "RIGHTC",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/green30x30.png",
-                    "name": "IMAGE_GREEN",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/downc20x20.png",
-                    "name": "CDOWN",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/emptyheart.png",
-                    "name": "HEART_EMPTY",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "data/timespan.pdc",
-                    "name": "ARCH",
-                    "targetPlatforms": null,
-                    "type": "raw"
-                },
-                {
-                    "file": "images/3quarterheart.png",
-                    "name": "HEART_3QUARTER",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/quarterheart.png",
-                    "name": "HEART_QUARTER",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/magic50px.png",
-                    "name": "MAGIC_BAR",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/blue30x30.png",
-                    "name": "IMAGE_BLUE",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/leftc20x20.png",
-                    "name": "LEFTC",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/halfheart.png",
-                    "name": "HEART_HALF",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/speed60px.png",
-                    "name": "SPEED",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/hoursun.png",
-                    "name": "HOUR_SUN",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/moonhour.png",
-                    "name": "MOON_HOUR",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/sunsecond.png",
-                    "name": "SUN_SECOND",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/Adult_Walletsm.png",
-                    "name": "WALLET_ICON",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/0.png",
-                    "name": "DIGIT_0",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/_1.png",
-                    "name": "DIGIT_1",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/2.png",
-                    "name": "DIGIT_2",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/3.png",
-                    "name": "DIGIT_3",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/4.png",
-                    "name": "DIGIT_4",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/5.png",
-                    "name": "DIGIT_5",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/6.png",
-                    "name": "DIGIT_6",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/7.png",
-                    "name": "DIGIT_7",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/8.png",
-                    "name": "DIGIT_8",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/9.png",
-                    "name": "DIGIT_9",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
+                { "file": "images/heartfull.png",                        "name": "HEART_FULL",    "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/battery/heartfull.png",            "name": "HEART_FULL",    "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/hearts/heartfull.png",        "name": "HEART_FULL",    "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/emptyheart.png",                       "name": "HEART_EMPTY",   "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/battery/emptyheart.png",           "name": "HEART_EMPTY",   "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/hearts/emptyheart.png",       "name": "HEART_EMPTY",   "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/halfheart.png",                        "name": "HEART_HALF",    "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/battery/halfheart.png",            "name": "HEART_HALF",    "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/hearts/halfheart.png",        "name": "HEART_HALF",    "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/quarterheart.png",                     "name": "HEART_QUARTER", "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/battery/quarterheart.png",         "name": "HEART_QUARTER", "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/hearts/quarterheart.png",     "name": "HEART_QUARTER", "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/3quarterheart.png",                    "name": "HEART_3QUARTER","targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/battery/3quarterheart.png",        "name": "HEART_3QUARTER","targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/hearts/3quarterheart.png",    "name": "HEART_3QUARTER","targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/rightc20x20.png",                      "name": "RIGHTC",        "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/cbuttons/rightc10x10.png",         "name": "RIGHTC",        "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/c_buttons/rightc20x20.png",   "name": "RIGHTC",        "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/leftc20x20.png",                       "name": "LEFTC",         "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/cbuttons/leftc10x10.png",          "name": "LEFTC",         "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/c_buttons/leftc20x20.png",    "name": "LEFTC",         "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/downc20x20.png",                       "name": "CDOWN",         "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/cbuttons/downc10x10.png",          "name": "CDOWN",         "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/c_buttons/downc20x20.png",    "name": "CDOWN",         "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/speed60px.png",                        "name": "SPEED",         "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/speed30px.png",                    "name": "SPEED",         "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/lg_an_time/speed60px.png",    "name": "SPEED",         "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/green30x30.png",                       "name": "IMAGE_GREEN",   "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/ab/green30x30.png",           "name": "IMAGE_GREEN",   "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/blue30x30.png",                        "name": "IMAGE_BLUE",    "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/ab/blue30x30.png",            "name": "IMAGE_BLUE",    "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/magic50px.png",                        "name": "MAGIC_BAR",     "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/misc/magic50px.png",          "name": "MAGIC_BAR",     "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/Adult_Walletsm.png",                   "name": "WALLET_ICON",   "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/misc/Adult_Walletsm.png",     "name": "WALLET_ICON",   "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "data/timespan.pdc",                           "name": "ARCH",          "targetPlatforms": null,                                   "type": "raw"    },
+
+                { "file": "images/hoursun.png",                          "name": "HOUR_SUN",      "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/an_time/hoursun.png",         "name": "HOUR_SUN",      "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/moonhour.png",                         "name": "MOON_HOUR",     "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/an_time/moonhour.png",        "name": "MOON_HOUR",     "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/sunsecond.png",                        "name": "SUN_SECOND",    "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/an_time/sunsecond.png",       "name": "SUN_SECOND",    "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/1st.png",                              "name": "FIRST_DAY",     "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/1st.png",                          "name": "FIRST_DAY",     "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+
+                { "file": "images/2nd.png",                              "name": "SECOND_DAY",    "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/2nd.png",                          "name": "SECOND_DAY",    "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+
+                { "file": "images/0.png",                                "name": "DIGIT_0",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/0.png",                        "name": "DIGIT_0",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/0.png",           "name": "DIGIT_0",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/_1.png",                               "name": "DIGIT_1",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/_1.png",                       "name": "DIGIT_1",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/_1.png",          "name": "DIGIT_1",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/2.png",                                "name": "DIGIT_2",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/2.png",                        "name": "DIGIT_2",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/2.png",           "name": "DIGIT_2",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/3.png",                                "name": "DIGIT_3",       "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/3.png",           "name": "DIGIT_3",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/4.png",                                "name": "DIGIT_4",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/4.png",                        "name": "DIGIT_4",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/4.png",           "name": "DIGIT_4",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/5.png",                                "name": "DIGIT_5",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/5.png",                        "name": "DIGIT_5",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/5.png",           "name": "DIGIT_5",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/6.png",                                "name": "DIGIT_6",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/6.png",                        "name": "DIGIT_6",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/6.png",           "name": "DIGIT_6",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/7.png",                                "name": "DIGIT_7",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/7.png",                        "name": "DIGIT_7",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/7.png",           "name": "DIGIT_7",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/8.png",                                "name": "DIGIT_8",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/8.png",                        "name": "DIGIT_8",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/8.png",           "name": "DIGIT_8",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/9.png",                                "name": "DIGIT_9",       "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/8px/bmf/9.png",                        "name": "DIGIT_9",       "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/bw/floyd/bitmap_font/9.png",           "name": "DIGIT_9",       "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
+
+                { "file": "images/moonphase/newmoon.png",          "name": "MOON_NEW",      "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/moonphase/waxingcrescent.png","name": "MOON_WAX_CRES", "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/moonphase/1stquarter.png",    "name": "MOON_FIRST_Q",  "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/moonphase/waxinggibbous.png", "name": "MOON_WAX_GIB",  "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/moonphase/fullmoon.png",      "name": "MOON_FULL",     "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/moonphase/waninggibbous.png", "name": "MOON_WAN_GIB",  "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/moonphase/lastquarter.png",   "name": "MOON_LAST_Q",   "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/moonphase/wainingcrescent.png","name": "MOON_WAN_CRES", "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+
                 {
                     "file": "font/Charlemagne.ttf",
                     "name": "OOT_FONT_24",
@@ -199,7 +152,15 @@
                 {
                     "file": "font/Triforce.ttf",
                     "name": "TRI_FONT_28",
-                    "type": "font"
+                    "type": "font",
+                    "targetPlatforms": ["basalt", "chalk", "emery", "gabbro", "diorite", "flint"]
+                },
+                {
+                    "file": "font/Triforce.ttf",
+                    "name": "TRI_FONT_28",
+                    "type": "font",
+                    "targetPlatforms": ["aplite"],
+                    "characterRegex": "[0-9]"
                 },
                 {
                     "file": "font/Triforce.ttf",
@@ -233,7 +194,7 @@
             "watchface": true
         }
     },
-    "version": "1.0.0",
+    "version": "1.1.0",
     "dependencies": {
         "@rebble/clay": "^1.0.10"
     }
