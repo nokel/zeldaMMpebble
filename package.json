@@ -15,6 +15,7 @@
                 "KEY_ANIM_ENABLED",
                 "KEY_ANIM_DURATION",
                 "KEY_TIMEOUT_S",
+                "KEY_BACKLIGHT_S",
                 "KEY_SHOW_HR",
                 "KEY_SHOW_STEPS"
             ],
@@ -41,26 +42,33 @@
                 { "file": "images/8px/battery/3quarterheart.png",        "name": "HEART_3QUARTER","targetPlatforms": ["chalk"],                              "type": "bitmap" },
                 { "file": "images/bw/floyd/hearts/3quarterheart.png",    "name": "HEART_3QUARTER","targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
 
-                { "file": "images/rightc20x20.png",                      "name": "RIGHTC",        "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/rightc23x23.png",                      "name": "RIGHTC",        "targetPlatforms": ["emery", "gabbro"],                    "type": "bitmap" },
+                { "file": "images/rightc20x20.png",                      "name": "RIGHTC",        "targetPlatforms": ["basalt"],                              "type": "bitmap" },
                 { "file": "images/8px/cbuttons/rightc10x10.png",         "name": "RIGHTC",        "targetPlatforms": ["chalk"],                              "type": "bitmap" },
                 { "file": "images/bw/floyd/c_buttons/rightc20x20.png",   "name": "RIGHTC",        "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
 
-                { "file": "images/leftc20x20.png",                       "name": "LEFTC",         "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/leftc23x23.png",                       "name": "LEFTC",         "targetPlatforms": ["emery", "gabbro"],                    "type": "bitmap" },
+                { "file": "images/leftc20x20.png",                       "name": "LEFTC",         "targetPlatforms": ["basalt"],                              "type": "bitmap" },
                 { "file": "images/8px/cbuttons/leftc10x10.png",          "name": "LEFTC",         "targetPlatforms": ["chalk"],                              "type": "bitmap" },
                 { "file": "images/bw/floyd/c_buttons/leftc20x20.png",    "name": "LEFTC",         "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
 
-                { "file": "images/downc20x20.png",                       "name": "CDOWN",         "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
+                { "file": "images/downc23x23.png",                       "name": "CDOWN",         "targetPlatforms": ["emery", "gabbro"],                    "type": "bitmap" },
+                { "file": "images/downc20x20.png",                       "name": "CDOWN",         "targetPlatforms": ["basalt"],                              "type": "bitmap" },
                 { "file": "images/8px/cbuttons/downc10x10.png",          "name": "CDOWN",         "targetPlatforms": ["chalk"],                              "type": "bitmap" },
                 { "file": "images/bw/floyd/c_buttons/downc20x20.png",    "name": "CDOWN",         "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
 
-                { "file": "images/speed60px.png",                        "name": "SPEED",         "targetPlatforms": ["basalt", "emery", "gabbro"],          "type": "bitmap" },
-                { "file": "images/8px/speed30px.png",                    "name": "SPEED",         "targetPlatforms": ["chalk"],                              "type": "bitmap" },
+                { "file": "images/speed60px.png",                        "name": "SPEED",         "targetPlatforms": ["basalt", "emery", "gabbro"],           "type": "bitmap" },
+                { "file": "images/8px/speed30px.png",                    "name": "SPEED",         "targetPlatforms": ["chalk"],                               "type": "bitmap" },
                 { "file": "images/bw/floyd/lg_an_time/speed60px.png",    "name": "SPEED",         "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
 
-                { "file": "images/green30x30.png",                       "name": "IMAGE_GREEN",   "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/green66x66.png",                       "name": "IMAGE_GREEN",   "targetPlatforms": ["emery", "gabbro"],                    "type": "bitmap" },
+                { "file": "images/green47x47.png",                       "name": "IMAGE_GREEN",   "targetPlatforms": ["chalk"],                               "type": "bitmap" },
+                { "file": "images/green30x30.png",                       "name": "IMAGE_GREEN",   "targetPlatforms": ["basalt"],                              "type": "bitmap" },
                 { "file": "images/bw/floyd/ab/green30x30.png",           "name": "IMAGE_GREEN",   "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
 
-                { "file": "images/blue30x30.png",                        "name": "IMAGE_BLUE",    "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
+                { "file": "images/blue66x66.png",                        "name": "IMAGE_BLUE",    "targetPlatforms": ["emery", "gabbro"],                    "type": "bitmap" },
+                { "file": "images/blue47x47.png",                        "name": "IMAGE_BLUE",    "targetPlatforms": ["chalk"],                               "type": "bitmap" },
+                { "file": "images/blue30x30.png",                        "name": "IMAGE_BLUE",    "targetPlatforms": ["basalt"],                              "type": "bitmap" },
                 { "file": "images/bw/floyd/ab/blue30x30.png",            "name": "IMAGE_BLUE",    "targetPlatforms": ["aplite", "diorite", "flint"],          "type": "bitmap" },
 
                 { "file": "images/magic50px.png",                        "name": "MAGIC_BAR",     "targetPlatforms": ["basalt", "chalk", "emery", "gabbro"], "type": "bitmap" },
@@ -148,6 +156,12 @@
                     "file": "font/CharlemagneRegular.ttf",
                     "name": "OOT_FONT_REG_18",
                     "type": "font"
+                },
+                {
+                    "file": "font/Triforce.ttf",
+                    "name": "TRI_FONT_40",
+                    "type": "font",
+                    "characterRegex": "[0-9]"
                 },
                 {
                     "file": "font/Triforce.ttf",
